@@ -1,12 +1,12 @@
 import Link from "next/link"
-import { ArrowRight, Star, ShoppingBag, Truck, Shield, Headphones } from "lucide-react"
+import { ArrowRight, ShoppingBag, Truck, Shield, Headphones } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { ProductGrid } from "@/components/product/product-grid"
+import { type Product } from "@/components/product/product-card"
 
 export default function HomePage() {
   // 模拟产品数据
-  const featuredProducts = [
+  const featuredProducts: Product[] = [
     {
       id: 1,
       name: "精美时尚手表",
@@ -136,41 +136,7 @@ export default function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product) => (
-              <Card key={product.id} className="group hover:shadow-lg transition-shadow">
-                <CardHeader className="p-0">
-                  <div className="relative aspect-square overflow-hidden rounded-t-lg">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge className="absolute top-2 left-2">
-                      {product.badge}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4">
-                  <h3 className="font-semibold mb-2 line-clamp-2">{product.name}</h3>
-                  <div className="flex items-center gap-1 mb-2">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm font-medium">{product.rating}</span>
-                    <span className="text-sm text-gray-500">({product.reviews})</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-red-600">¥{product.price}</span>
-                    <span className="text-sm text-gray-500 line-through">¥{product.originalPrice}</span>
-                  </div>
-                </CardContent>
-                <CardFooter className="p-4 pt-0">
-                  <Button className="w-full" variant="outline">
-                    查看详情
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+          <ProductGrid products={featuredProducts} />
 
           <div className="text-center mt-12">
             <Button asChild size="lg">
