@@ -51,12 +51,37 @@ export interface CartItem {
     [key: string]: string | undefined
   }
   maxStock: number
+  selected: boolean
 }
 
 export interface Cart {
   items: CartItem[]
   total: number
   itemCount: number
+}
+
+// 配送方式类型
+export interface ShippingMethod {
+  id: string
+  name: string
+  description: string
+  price: number
+  estimatedDays: string
+  icon?: string
+}
+
+// 优惠券类型
+export interface Coupon {
+  id: string
+  code: string
+  name: string
+  description: string
+  type: 'percentage' | 'fixed'
+  value: number
+  minOrder: number
+  maxDiscount?: number
+  expiresAt: string
+  isActive: boolean
 }
 
 // 用户相关类型
@@ -88,10 +113,15 @@ export interface Order {
   id: string
   userId: string
   items: OrderItem[]
+  subtotal: number
+  shippingCost: number
+  discount: number
   total: number
   status: OrderStatus
   shippingAddress: Address
+  shippingMethod: ShippingMethod
   paymentMethod: string
+  couponCode?: string
   createdAt: string
   updatedAt: string
 }

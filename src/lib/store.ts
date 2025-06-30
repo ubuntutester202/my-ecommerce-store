@@ -9,6 +9,8 @@ interface CartStore {
   // 计算属性
   itemCount: number
   total: number
+  selectedCount: number
+  selectedTotal: number
   
   // 购物车操作
   addItem: (product: Product, quantity?: number, variant?: Record<string, string>) => void
@@ -16,9 +18,18 @@ interface CartStore {
   updateQuantity: (id: number, quantity: number) => void
   clearCart: () => void
   
+  // 商品选择操作
+  toggleSelectItem: (id: number) => void
+  selectAll: () => void
+  unselectAll: () => void
+  toggleSelectAll: () => void
+  
   // 辅助方法
   getItem: (productId: number) => CartItem | undefined
   isInCart: (productId: number) => boolean
+  getSelectedItems: () => CartItem[]
+  isAllSelected: () => boolean
+  hasSelectedItems: () => boolean
 }
 
 export const useCartStore = create<CartStore>()(
@@ -34,6 +45,16 @@ export const useCartStore = create<CartStore>()(
       
       get total() {
         return get().items.reduce((total, item) => total + (item.price * item.quantity), 0)
+      },
+      
+      get selectedCount() {
+        return get().items.filter(item => item.selected).reduce((total, item) => total + item.quantity, 0)
+      },
+      
+      get selectedTotal() {
+        return get().items
+          .filter(item => item.selected)
+          .reduce((total, item) => total + (item.price * item.quantity), 0)
       },
       
       // 添加商品到购物车
@@ -54,7 +75,7 @@ export const useCartStore = create<CartStore>()(
           }
           set({ items: updatedItems })
         } else {
-          // 添加新商品
+          // 添加新商品，默认选中
           const newItem: CartItem = {
             id: Date.now(),
             productId: product.id,
@@ -63,7 +84,8 @@ export const useCartStore = create<CartStore>()(
             quantity: Math.min(quantity, product.stock),
             image: product.images[0] || '',
             variant,
-            maxStock: product.stock
+            maxStock: product.stock,
+            selected: true
           }
           set({ items: [...items, newItem] })
         }
@@ -99,6 +121,42 @@ export const useCartStore = create<CartStore>()(
         set({ items: [] })
       },
       
+      // 切换商品选择状态
+      toggleSelectItem: (id: number) => {
+        const items = get().items
+        const updatedItems = items.map(item => {
+          if (item.id === id) {
+            return { ...item, selected: !item.selected }
+          }
+          return item
+        })
+        set({ items: updatedItems })
+      },
+      
+      // 全选
+      selectAll: () => {
+        const items = get().items
+        const updatedItems = items.map(item => ({ ...item, selected: true }))
+        set({ items: updatedItems })
+      },
+      
+      // 取消全选
+      unselectAll: () => {
+        const items = get().items
+        const updatedItems = items.map(item => ({ ...item, selected: false }))
+        set({ items: updatedItems })
+      },
+      
+      // 切换全选状态
+      toggleSelectAll: () => {
+        const isAllSelected = get().isAllSelected()
+        if (isAllSelected) {
+          get().unselectAll()
+        } else {
+          get().selectAll()
+        }
+      },
+      
       // 获取购物车中的商品
       getItem: (productId: number) => {
         return get().items.find(item => item.productId === productId)
@@ -107,6 +165,22 @@ export const useCartStore = create<CartStore>()(
       // 检查商品是否在购物车中
       isInCart: (productId: number) => {
         return get().items.some(item => item.productId === productId)
+      },
+      
+      // 获取选中的商品
+      getSelectedItems: () => {
+        return get().items.filter(item => item.selected)
+      },
+      
+      // 检查是否全选
+      isAllSelected: () => {
+        const items = get().items
+        return items.length > 0 && items.every(item => item.selected)
+      },
+      
+      // 检查是否有选中商品
+      hasSelectedItems: () => {
+        return get().items.some(item => item.selected)
       }
     }),
     {
