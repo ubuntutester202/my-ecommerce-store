@@ -94,4 +94,7 @@ export function LoadingButton({
       {children}
     </button>
   )
-} 
+}
+
+// 通用Loading组件，兼容性导出
+export const Loading = LoadingSpinner 

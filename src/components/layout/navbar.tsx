@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/sheet"
 import { NoSSR } from "@/components/ui/no-ssr"
 import { CartSidebar } from "@/components/cart/cart-sidebar"
+import { SearchBar } from "@/components/search/search-bar"
 import { useCartStore } from "@/lib/store"
 import { useWishlist } from "@/hooks/use-wishlist"
 
@@ -77,23 +78,26 @@ export function Navbar() {
 
           {/* 搜索框 */}
           <div className="hidden lg:flex flex-1 max-w-md mx-8">
-            <div className="relative w-full">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="搜索商品..."
-                className="pl-8"
-              />
-            </div>
+            <SearchBar />
           </div>
 
           {/* 右侧工具栏 */}
           <div className="flex items-center space-x-2">
             {/* 移动端搜索 */}
-            <Button variant="ghost" size="icon" className="lg:hidden">
-              <Search className="h-5 w-5" />
-              <span className="sr-only">搜索</span>
-            </Button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="lg:hidden">
+                  <Search className="h-5 w-5" />
+                  <span className="sr-only">搜索</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="top" className="h-auto">
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-4">搜索商品</h3>
+                  <SearchBar />
+                </div>
+              </SheetContent>
+            </Sheet>
 
             {/* 收藏夹 */}
             <WishlistButton />
