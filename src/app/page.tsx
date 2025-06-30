@@ -52,30 +52,42 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="container mx-auto px-4 py-24 lg:py-32">
+      <section className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white">
+        {/* 背景装饰元素 */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        </div>
+        
+        <div className="container relative mx-auto px-4 py-24 lg:py-32">
           <div className="max-w-3xl">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
+            <h1 className="text-4xl lg:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
               发现优质商品
               <br />
               享受购物乐趣
             </h1>
-            <p className="text-lg lg:text-xl mb-8 text-blue-100">
+            <p className="text-lg lg:text-xl mb-8 text-blue-100 leading-relaxed">
               EStore为您精选全球优质商品，提供贴心服务和快速配送，
               让每一次购物都成为愉快的体验。
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50">
+              <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50 hover:scale-105 transition-transform shadow-lg">
                 开始购物
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-blue-600 hover:scale-105 transition-transform">
                 了解更多
               </Button>
             </div>
           </div>
         </div>
-        <div className="absolute inset-0 bg-black/10"></div>
+        
+        {/* 底部波浪装饰 */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg className="w-full h-16 text-white" fill="currentColor" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+          </svg>
+        </div>
       </section>
 
       {/* Features Section */}
