@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import NextAuthProvider from "@/components/providers/session-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,11 +54,13 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={inter.variable} suppressHydrationWarning>
       <body className="font-sans antialiased min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+        <NextAuthProvider>
+          <Navbar />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </NextAuthProvider>
       </body>
     </html>
   );

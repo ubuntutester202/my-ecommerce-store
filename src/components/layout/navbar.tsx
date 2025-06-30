@@ -1,7 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import { Search, ShoppingCart, User, Menu, Heart } from "lucide-react"
+import { useSession, signOut } from "next-auth/react"
+import { Search, ShoppingCart, User, Menu, Heart, LogOut, Settings, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
@@ -24,6 +25,8 @@ import { useCartStore } from "@/lib/store"
 import { useWishlist } from "@/hooks/use-wishlist"
 
 export function Navbar() {
+  const { data: session, status } = useSession()
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -98,34 +101,75 @@ export function Navbar() {
             {/* 购物车 */}
             <CartButton />
 
-            {/* 用户菜单 */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src="" alt="用户头像" />
-                    <AvatarFallback>
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
+            {/* 用户认证区域 */}
+            {status === "loading" ? (
+              <div className="w-8 h-8 animate-pulse bg-gray-200 rounded-full" />
+            ) : session ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={session.user.image || ""} alt={session.user.name || "用户"} />
+                      <AvatarFallback>
+                        {session.user.name?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <div className="flex items-center justify-start gap-2 p-2">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">{session.user.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {session.user.email}
+                      </p>
+                    </div>
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/profile" className="flex items-center">
+                      <User className="mr-2 h-4 w-4" />
+                      个人资料
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/profile/orders" className="flex items-center">
+                      <Package className="mr-2 h-4 w-4" />
+                      我的订单
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/profile/addresses" className="flex items-center">
+                      <Settings className="mr-2 h-4 w-4" />
+                      收货地址
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/wishlist" className="flex items-center">
+                      <Heart className="mr-2 h-4 w-4" />
+                      收藏夹
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem 
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="cursor-pointer text-red-600 focus:text-red-600"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    退出登录
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="sm" asChild>
+                  <Link href="/auth/signin">登录</Link>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuItem asChild>
-                  <Link href="/profile">个人资料</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/orders">我的订单</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/wishlist">收藏夹</Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  退出登录
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                <Button size="sm" asChild>
+                  <Link href="/auth/signup">注册</Link>
+                </Button>
+              </div>
+            )}
 
             {/* 移动端菜单 */}
             <Sheet>
