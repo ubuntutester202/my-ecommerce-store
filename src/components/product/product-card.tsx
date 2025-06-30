@@ -4,17 +4,7 @@ import { Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
-
-export interface Product {
-  id: number
-  name: string
-  price: number
-  originalPrice?: number
-  image: string
-  rating: number
-  reviews: number
-  badge?: string
-}
+import { type Product } from "@/types"
 
 interface ProductCardProps {
   product: Product
@@ -23,13 +13,18 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className = "", style }: ProductCardProps) {
+  // 使用第一张图片作为主图，如果没有图片则使用占位符
+  const mainImage = product.images && product.images.length > 0 
+    ? product.images[0] 
+    : "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=300&fit=crop"
+
   return (
     <Card className={`group hover:shadow-lg transition-shadow ${className}`} style={style}>
       <CardHeader className="p-0">
         <div className="relative aspect-square overflow-hidden rounded-t-lg">
           <Link href={`/products/${product.id}`}>
             <Image
-              src={product.image}
+              src={mainImage}
               alt={product.name}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
@@ -70,4 +65,7 @@ export function ProductCard({ product, className = "", style }: ProductCardProps
       </CardFooter>
     </Card>
   )
-} 
+}
+
+// 导出类型以保持向后兼容
+export type { Product } 

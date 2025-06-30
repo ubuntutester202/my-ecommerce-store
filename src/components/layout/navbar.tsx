@@ -19,11 +19,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { NoSSR } from "@/components/ui/no-ssr"
+import { CartSidebar } from "@/components/cart/cart-sidebar"
+import { useCartStore } from "@/lib/store"
+import { useWishlist } from "@/hooks/use-wishlist"
 
 export function Navbar() {
-  // 临时的购物车商品数量
-  const cartItemCount = 3
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
@@ -73,7 +73,7 @@ export function Navbar() {
           </nav>
 
           {/* 搜索框 */}
-          <div className="hidden lg:flex items-center space-x-2 flex-1 max-w-sm mx-6">
+          <div className="hidden lg:flex flex-1 max-w-md mx-8">
             <div className="relative w-full">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -93,26 +93,10 @@ export function Navbar() {
             </Button>
 
             {/* 收藏夹 */}
-            <Button variant="ghost" size="icon">
-              <Heart className="h-5 w-5" />
-              <span className="sr-only">收藏夹</span>
-            </Button>
+            <WishlistButton />
 
             {/* 购物车 */}
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <NoSSR>
-                {cartItemCount > 0 && (
-                  <Badge 
-                    variant="destructive" 
-                    className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-                  >
-                    {cartItemCount}
-                  </Badge>
-                )}
-              </NoSSR>
-              <span className="sr-only">购物车</span>
-            </Button>
+            <CartButton />
 
             {/* 用户菜单 */}
             <DropdownMenu>
@@ -196,5 +180,53 @@ export function Navbar() {
         </div>
       </div>
     </header>
+  )
+}
+
+// 收藏夹按钮组件
+function WishlistButton() {
+  const { itemCount } = useWishlist()
+
+  return (
+    <Button variant="ghost" size="icon" asChild>
+      <Link href="/wishlist">
+        <Heart className="h-5 w-5" />
+        <NoSSR>
+          {itemCount > 0 && (
+            <Badge 
+              variant="destructive" 
+              className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+            >
+              {itemCount}
+            </Badge>
+          )}
+        </NoSSR>
+        <span className="sr-only">收藏夹</span>
+      </Link>
+    </Button>
+  )
+}
+
+// 购物车按钮组件
+function CartButton() {
+  const itemCount = useCartStore(state => state.itemCount)
+
+  return (
+    <CartSidebar>
+      <Button variant="ghost" size="icon" className="relative">
+        <ShoppingCart className="h-5 w-5" />
+        <NoSSR>
+          {itemCount > 0 && (
+            <Badge 
+              variant="destructive" 
+              className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+            >
+              {itemCount}
+            </Badge>
+          )}
+        </NoSSR>
+        <span className="sr-only">购物车</span>
+      </Button>
+    </CartSidebar>
   )
 } 

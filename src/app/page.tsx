@@ -2,50 +2,114 @@ import Link from "next/link"
 import { ArrowRight, ShoppingBag, Truck, Shield, Headphones } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ProductGrid } from "@/components/product/product-grid"
-import { type Product } from "@/components/product/product-card"
+import { type Product } from "@/types"
 
 export default function HomePage() {
-  // 模拟产品数据
+  // 模拟产品数据 - 简化版本用于首页展示
   const featuredProducts: Product[] = [
     {
       id: 1,
       name: "精美时尚手表",
+      description: "这款精美时尚手表采用瑞士机芯，316L不锈钢表壳，蓝宝石水晶镜面，50米防水。",
       price: 299,
       originalPrice: 399,
-      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&h=300&fit=crop"
+      ],
+      category: "配饰",
+      categoryId: 1,
+      brand: "ELEGANCE",
       rating: 4.8,
       reviews: 124,
-      badge: "热销"
+      stock: 58,
+      sales: 1234,
+      badge: "热销",
+      specifications: [
+        { name: "表盘直径", value: "42mm" },
+        { name: "机芯", value: "瑞士石英" }
+      ],
+      features: ["瑞士进口机芯，精准计时", "蓝宝石水晶镜面，抗刮耐磨"],
+      tags: ["手表", "时尚", "商务"],
+      createdAt: "2024-01-15T08:00:00Z",
+      updatedAt: "2024-01-20T10:30:00Z"
     },
     {
       id: 2,
       name: "无线蓝牙耳机",
+      description: "高品质无线蓝牙耳机，采用最新蓝牙5.3技术，连接稳定，音质清晰。",
       price: 199,
       originalPrice: 299,
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300&h=300&fit=crop"
+      ],
+      category: "数码",
+      categoryId: 2,
+      brand: "SOUNDTECH",
       rating: 4.6,
       reviews: 89,
-      badge: "新品"
+      stock: 42,
+      sales: 856,
+      badge: "新品",
+      specifications: [
+        { name: "蓝牙版本", value: "5.3" },
+        { name: "续航时间", value: "30小时" }
+      ],
+      features: ["蓝牙5.3技术，连接稳定", "主动降噪，沉浸音质"],
+      tags: ["耳机", "蓝牙", "降噪"],
+      createdAt: "2024-01-20T09:00:00Z",
+      updatedAt: "2024-01-22T14:15:00Z"
     },
     {
       id: 3,
       name: "智能运动手环",
+      description: "多功能智能运动手环，支持心率监测、睡眠分析、运动记录等功能。",
       price: 159,
       originalPrice: 219,
-      image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=300&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=300&fit=crop"
+      ],
+      category: "智能穿戴",
+      categoryId: 3,
+      brand: "FITTECH",
       rating: 4.7,
       reviews: 156,
-      badge: "特价"
+      stock: 36,
+      sales: 698,
+      badge: "特价",
+      specifications: [
+        { name: "屏幕尺寸", value: "1.4英寸" },
+        { name: "续航时间", value: "7天" }
+      ],
+      features: ["心率监测", "睡眠分析", "防水设计"],
+      tags: ["手环", "运动", "健康"],
+      createdAt: "2024-01-18T10:00:00Z",
+      updatedAt: "2024-01-21T16:30:00Z"
     },
     {
       id: 4,
       name: "高品质背包",
+      description: "时尚商务背包，采用防水材质，多层收纳设计，适合通勤和旅行使用。",
       price: 179,
       originalPrice: 249,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop",
+      images: [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=300&fit=crop"
+      ],
+      category: "箱包",
+      categoryId: 4,
+      brand: "URBANBAG",
       rating: 4.5,
       reviews: 78,
-      badge: "推荐"
+      stock: 24,
+      sales: 423,
+      badge: "推荐",
+      specifications: [
+        { name: "容量", value: "25L" },
+        { name: "材质", value: "防水尼龙" }
+      ],
+      features: ["防水材质", "多层收纳", "舒适背负"],
+      tags: ["背包", "商务", "旅行"],
+      createdAt: "2024-01-12T14:00:00Z",
+      updatedAt: "2024-01-19T11:45:00Z"
     }
   ]
 
